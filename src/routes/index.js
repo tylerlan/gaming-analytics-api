@@ -1,6 +1,11 @@
 const express = require('express');
 const { getDataFromRange } = require('../services/getDataFromRange');
 const { asyncMiddleware } = require('../middleware');
+const {
+  organizeDataByMetric,
+  makeTuples,
+  makeArraysOfValues
+} = require('../helpers');
 const router = express.Router();
 
 // Expecting endpoint like: /per-unit-per-day?from=2017/11/04&to=2017/12/04
@@ -9,7 +14,8 @@ router.get(
   asyncMiddleware(async (req, res, next) => {
     const { from, to } = req.query;
     const rawData = await getDataFromRange('pupd', from, to);
-    res.json(rawData);
+    const organizedData = await organizeDataByMetric(rawData.result);
+    res.json(organizedData);
   })
 );
 
@@ -19,7 +25,8 @@ router.get(
   asyncMiddleware(async (req, res, next) => {
     const { from, to } = req.query;
     const rawData = await getDataFromRange('aggr', from, to);
-    res.json(rawData);
+    const organizedData = await organizeDataByMetric(rawData.result);
+    res.json(organizedData);
   })
 );
 
