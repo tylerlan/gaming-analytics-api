@@ -26,7 +26,6 @@ app.get('/', (req, res) => {
 =========================== */
 
 app.use((err, req, res, next) => {
-  console.log('Something broke! >>>>>>>>>>>>>>>>>>>>');
   console.error('Something broke!', err);
   return res.sendStatus(err.httpStatusCode).json(err);
 });
