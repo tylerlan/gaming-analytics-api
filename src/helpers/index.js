@@ -1,12 +1,3 @@
-// Metrics don't need to be sorted by date
-// BUT DATES NEED TO BE SORTED (by the time they're in the SPA at least)
-
-// const sortByDate = arr =>
-//   arr.sort((a, b) => {
-//     // return a.dateTicks - b.dateTicks;
-//     return new Date(a.date) - new Date(b.date);
-//   });
-
 // MAKES AN OBJECT OF OBJECTS
 // This makes more sense because it can by easily traversed by mapping over the array of dates with O(1) lookup
 // And that means the metric data does not have to be ordered
@@ -26,6 +17,11 @@ const organizeDataByMetric = arrayOfDays => {
         organizedData.metrics[prop][day['date']] = day[prop];
       }
     }
+  });
+
+  // Sort the dates, just in case. They need to be in order for transformations to occur in the SPA.
+  organizedData.dates.sort((a, b) => {
+    return new Date(a) - new Date(b);
   });
 
   return organizedData;
