@@ -6,6 +6,7 @@ const {
   makeTuples,
   makeArraysOfValues
 } = require('../helpers');
+const boom = require('boom');
 const router = express.Router();
 
 // Expecting endpoint like: /per-unit-per-day?from=2017/11/04&to=2017/12/04
@@ -13,30 +14,60 @@ router.get(
   '/per-unit-per-day',
   asyncMiddleware(async (req, res, next) => {
     const { from, to } = req.query;
+
+    if (!from || !to) {
+      throw boom.badRequest('must enter valid date range');
+    }
+
     const rawData = await getDataFromRange('pupd', from, to);
-    const organizedData = await organizeDataByMetric(rawData.result);
-    res.json(organizedData);
+
+    if (rawData.result.length <= 0) {
+      throw boom.notFound(`no data available for the range: ${from} - ${to}`);
+    } else {
+      const organizedData = await organizeDataByMetric(rawData.result);
+      res.json(organizedData);
+    }
   })
 );
 
 // Expecting endpoint like: /agg-per-day?from=2017/11/04&to=2017/12/04
 router.get(
-  '/agg-per-day',
+  '/aggr-per-day',
   asyncMiddleware(async (req, res, next) => {
     const { from, to } = req.query;
+
+    if (!from || !to) {
+      throw boom.badRequest('must enter valid date range');
+    }
+
     const rawData = await getDataFromRange('aggr', from, to);
-    const organizedData = await organizeDataByMetric(rawData.result);
-    res.json(organizedData);
+
+    if (rawData.result.length <= 0) {
+      throw boom.notFound(`no data available for the range: ${from}-${to}`);
+    } else {
+      const organizedData = await organizeDataByMetric(rawData.result);
+      res.json(organizedData);
+    }
   })
 );
 
-// Expecting endpoint like: /manufact?from=2017/11/04&to=2017/12/04
+// Expecting endpoint like: /manufacture?from=2017/11/04&to=2017/12/04
 router.get(
   '/manufacture',
   asyncMiddleware(async (req, res, next) => {
     const { from, to } = req.query;
-    const data = await getDataFromRange('mfgmix', from, to);
-    res.json(data);
+
+    if (!from || !to) {
+      throw boom.badRequest('must enter valid date range');
+    }
+
+    const rawData = await getDataFromRange('mfgmix', from, to);
+
+    if (rawData.result.length <= 0) {
+      throw boom.notFound(`no data available for the range: ${from} - ${to}`);
+    } else {
+      res.json({ dateRange: { from, to }, records: rawData['result'] });
+    }
   })
 );
 
