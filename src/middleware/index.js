@@ -1,6 +1,13 @@
+const boom = require('boom');
 // MIDDLEWARE WRAPPER MAKES SURE ERRORS GET PASSED TO NEXT
+
 const asyncMiddleware = fn => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
+  Promise.resolve(fn(req, res, next)).catch(err => {
+    if (!err.isBoom) {
+      return next(boom.badImplementation(err));
+    }
+    next(err);
+  });
 };
 
 module.exports = {
