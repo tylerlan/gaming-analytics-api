@@ -1,7 +1,3 @@
-// MAKES AN OBJECT OF OBJECTS
-// This makes more sense because it can by easily traversed by mapping over the array of dates with O(1) lookup
-// And that means the metric data does not have to be ordered
-// Entering dates at the same time as metrics also ensures that we always know we have data for dates that are stored
 const organizeDataByMetric = arrayOfDays => {
   // this step is creating a package for the frontend to easily digest
   let organizedData = { dates: [], metrics: {} };
@@ -11,8 +7,9 @@ const organizeDataByMetric = arrayOfDays => {
     organizedData.dates.push(day['date']);
 
     // store the values for each metric by date
+    // omit, date, dateTicks, and machineDays -- they aren't necessary for frontend
     for (let prop in day) {
-      if (prop !== 'date') {
+      if (prop !== 'date' && prop !== 'dateTicks' && prop !== 'machineDays') {
         if (!organizedData.metrics[prop]) organizedData.metrics[prop] = {};
         organizedData.metrics[prop][day['date']] = day[prop];
       }
