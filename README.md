@@ -8,15 +8,9 @@ A data API built for a coding challenge, supporting a React
 1. Please fork and clone this repo
 2. `cd gaming-analytics-api`
 3. `npm i`
-4. `touch .env`
-5. Add the endpoint like so:
-
-```
-BASE_URL=https://hiring.testgaai.com/ask/floor
-```
-
-6. `npm start`
-7. Enjoy!
+4. `echo BASE_URL=https://hiring.testgaai.com/ask/floor > .env`
+5. `npm start`
+6. Enjoy!
 
 # Testing
 
