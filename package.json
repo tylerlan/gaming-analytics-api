@@ -1,7 +1,8 @@
 {
   "name": "tylers-gaming-analytics-api",
   "version": "1.0.0",
-  "description": "A data API built for a coding challenge, supporting a React [frontend](https://github.com/tylerlan/gaming-analytics-spa#readme)",
+  "description":
+    "A data API built for a coding challenge, supporting a React [frontend](https://github.com/tylerlan/gaming-analytics-spa#readme)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -43,5 +44,8 @@
     "sinon": "3.0.0",
     "superagent": "^3.8.2",
     "supertest": "^3.0.0"
+  },
+  "engines": {
+    "node": "8.1.3"
   }
 }
